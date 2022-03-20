@@ -27,22 +27,15 @@
 		"page": "preferences.html"
 	},
 
-	
+
 	"permissions": [
-		"https://github.com/fregante/browser-extension-template/*",
 		"storage"
 	],
 	"content_scripts": [
 		{
-			"matches": [ "https://github.com/fregante/browser-extension-template/*" ],
-			"js": [ "content.js" ],
+			"matches": [ "*://www.google.com/*" ],
+			"js": [ "google/content.js" ],
 			"run_at": "document_end"
 		}
-	],
-	"background": {
-		"persistent": false,
-		"scripts": [
-			"background.js"
-		]
-	}
+	]
 }
