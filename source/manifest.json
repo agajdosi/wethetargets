@@ -1,8 +1,8 @@
 {
-	"name": "Awesome Extension",
-	"version": "0.0.0",
+	"name": "Platform Reverse Psychology",
+	"version": "0.0.1",
 	"description": "An awesome new browser extension",
-	"homepage_url": "https://github.com/fregante/browser-extension-template",
+	"homepage_url": "https://github.com/agajdosi/extension",
 	"manifest_version": 2,
 	"minimum_chrome_version": "80",
 	"applications": {
@@ -14,6 +14,20 @@
 	"icons": {
 		"128": "icon.png"
 	},
+	"browser_action": {
+    "default_popup": "menu/welcome.html",
+    "default_icon": {
+      "16": "icon.png",
+      "32": "icon.png",
+      "48": "icon.png"
+		}
+  },
+	"options_ui": {
+		"chrome_style": true,
+		"page": "preferences.html"
+	},
+
+	
 	"permissions": [
 		"https://github.com/fregante/browser-extension-template/*",
 		"storage"
@@ -22,14 +36,9 @@
 		{
 			"matches": [ "https://github.com/fregante/browser-extension-template/*" ],
 			"js": [ "content.js" ],
-			"css": [ "content.css" ],
 			"run_at": "document_end"
 		}
 	],
-	"options_ui": {
-		"chrome_style": true,
-		"page": "options.html"
-	},
 	"background": {
 		"persistent": false,
 		"scripts": [
