@@ -15,7 +15,7 @@
 		"128": "icon.png"
 	},
 	"browser_action": {
-    "default_popup": "menu/welcome.html",
+    "default_popup": "popup/popup.html",
     "default_icon": {
       "16": "icon.png",
       "32": "icon.png",
@@ -34,8 +34,12 @@
 	"content_scripts": [
 		{
 			"matches": [ "*://www.google.com/" ],
-			"js": [ "google/testrun.js" ],
+			"js": [ "google/contentScript.js" ],
 			"run_at": "document_end"
 		}
-	]
+	],
+	"background": {
+		"scripts": [ "background.js" ],
+		"persistent": false
+	}
 }

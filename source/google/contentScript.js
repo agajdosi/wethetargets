@@ -2,37 +2,42 @@
 //searchQuestion("how to")
 //let results = waitForElement("li.sbct:not(#YMXe)").then(getSuggestions);
 
-runTests()
+//runTests()
 
 
-async function runTests(){
-  await searchQuestion("how to")
+let myPort = browser.runtime.connect({name:"portFromContentScript"});
+myPort.postMessage({message: "google"});
+
+myPort.onMessage.addListener(function(m) {
+  if (m.question != undefined){
+    runTests(m.question)
+  }
+});
+
+
+async function runTests(question){
+  await searchQuestion(question)
   await waitForElement("li.sbct:not(#YMXe)")
   results = await getSuggestions()
   console.log(results)
-
-
-  await searchQuestion("where to")
-  await waitForElement("li.sbct:not(#YMXe)")
-  results = await getSuggestions()
-  console.log(results)
-
-
-  await searchQuestion("which")
-  await waitForElement("li.sbct:not(#YMXe)")
-  results = await getSuggestions()
-  console.log(results)
+  window.location.reload();
 }
 
+async function deleteSearch() {
+  let deleteButton = document.querySelector("span.ExCKkf")
+  deleteButton.click()
 
-
-
+  let searchField = document.getElementsByName("q")[0]
+  searchField.value = ""
+  searchField.click()
+}
 
 async function searchQuestion(question) {
   let searchField = document.getElementsByName("q")[0]
   searchField.value = question
   searchField.click()
 }
+
 
 async function getSuggestions() {
   let suggestions = document.querySelectorAll("div.wM6W7d")
