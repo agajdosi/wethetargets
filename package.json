@@ -46,7 +46,7 @@
 		"sourceDir": "distribution",
 		"run": {
 			"startUrl": [
-				"https://idnes.cz"
+				"https://google.com"
 			]
 		}
 	}
