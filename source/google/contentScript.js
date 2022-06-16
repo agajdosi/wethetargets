@@ -1,12 +1,7 @@
 
-//searchQuestion("how to")
-//let results = waitForElement("li.sbct:not(#YMXe)").then(getSuggestions);
-
-//runTests()
-
 
 let myPort = browser.runtime.connect({name:"portFromContentScript"});
-myPort.postMessage({message: "google"});
+myPort.postMessage({page: "google"});
 
 myPort.onMessage.addListener(function(m) {
   if (m.question != undefined){

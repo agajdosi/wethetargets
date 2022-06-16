@@ -4,38 +4,36 @@ let portFromPopup;
 let googleQuestions = [];
 let googleReadyForTest = false;
 
+browser.runtime.onConnect.addListener(connected);
+
 function connected(port) {
   if (port.name == "portFromContentScript"){
     portFromContentScript = port;
-
-    portFromContentScript.onMessage.addListener(function(m) {
-      if (m.message == "google") {
-        let question = googleQuestions.pop()
-        if (question == undefined) {
-          return
-        }
-        portFromContentScript.postMessage({question: question});
-        //chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        //  chrome.tabs.reload(tabs[0].id);
-        //});
-      }
-      portFromContentScript.postMessage({greeting: "In background script, received message from content script:" + m.greeting});
-    });
+    portFromContentScript.onMessage.addListener(handleMessageFromContentScript);
   }
-
   if (port.name == "portFromPopup"){
     portFromPopup = port;
-    portFromPopup.onMessage.addListener(handlePopupMessage);
+    portFromPopup.onMessage.addListener(handleMessageFromPopup);
+  }
+}
+
+
+function handleMessageFromContentScript(message){
+  if (message.page == "google") {
+    let question = googleQuestions.pop()
+    if (question == undefined) {
+      return
+    }
+    portFromContentScript.postMessage({question: question});
   }
 
+  portFromContentScript.postMessage({greeting: "In background script, received message from content script:" + m.greeting});
 }
 
-
-
-
-function handlePopupMessage(message){
+function handleMessageFromPopup(message){
   runGoogleTest(); //handle another options in future
 }
+
 
 function runGoogleTest(){
   googleQuestions = ["how to", "where to", "which"];
@@ -43,7 +41,3 @@ function runGoogleTest(){
 }
 
 
-
-
-
-browser.runtime.onConnect.addListener(connected);

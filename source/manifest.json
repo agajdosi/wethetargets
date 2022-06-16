@@ -26,8 +26,6 @@
 		"chrome_style": true,
 		"page": "preferences.html"
 	},
-
-
 	"permissions": [
 		"storage"
 	],
