@@ -1,8 +1,8 @@
 let portFromContentScript;
 let portFromPopup;
 
-let googleQuestions = [];
-let googleReadyForTest = false;
+let questions = [];
+let results = [];
 
 browser.runtime.onConnect.addListener(connected);
 
@@ -24,25 +24,27 @@ function handleMessageFromContentScript(message){
 
 function handleMessageFromGoogle(message){
   if (message.type == "results") {
-    console.log(message.results)
+    results.push([message.question, message.results])
     return
   }
   
   if (message.type == "started") {
-    let question = googleQuestions.pop()
+    let question = questions.pop()
     if (question == undefined) {
+      console.log(results)
       return
     }
-    portFromContentScript.postMessage({question: question});
+    portFromContentScript.postMessage({"question": question});
   }
 }
 
 function handleMessageFromPopup(message){
-  runGoogleTest(); //handle another options in future
+  if (message.command == "start the google test") runGoogleTest();
 }
 
 
 function runGoogleTest(){
-  googleQuestions = ["how to", "where to", "which"];
+  results = [];
+  questions = ["how to", "where to", "which"];
   browser.tabs.update({url: "https://google.com"})
 }
