@@ -37,7 +37,5 @@ function handleMessageFromPopup(message){
 
 function runGoogleTest(){
   googleQuestions = ["how to", "where to", "which"];
-  console.log(googleQuestions);
+  browser.tabs.update({url: "https://google.com"})
 }
-
-
