@@ -1,20 +1,24 @@
 
-
 let myPort = browser.runtime.connect({name:"portFromContentScript"});
-myPort.postMessage({page: "google"});
+myPort.onMessage.addListener(handleMessage);
+myPort.postMessage({type: "started", page: "google"});
 
-myPort.onMessage.addListener(function(m) {
-  if (m.question != undefined){
-    runTests(m.question)
+async function handleMessage(message){
+  if (message.question != undefined){
+    runTests(message.question)
   }
-});
-
+}
 
 async function runTests(question){
   await searchQuestion(question)
   await waitForElement("li.sbct:not(#YMXe)")
   results = await getSuggestions()
-  console.log(results)
+  myPort.postMessage({
+    "type": "results",
+    "page": "google",
+    "question": question,
+    "results": results
+  })
   window.location.reload();
 }
 
@@ -43,7 +47,6 @@ async function getSuggestions() {
       continue
     }
     results.push(result)
-    console.log(result)
   }
 
   return results
@@ -74,8 +77,3 @@ function waitForElement(selector) {
     observer.observe(document.documentElement, { childList: true, subtree: true });
   });
 }
-
-
-
-
-console.log("Content script ended")

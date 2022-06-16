@@ -19,15 +19,22 @@ function connected(port) {
 
 
 function handleMessageFromContentScript(message){
-  if (message.page == "google") {
+  if (message.page == "google") handleMessageFromGoogle(message);
+}
+
+function handleMessageFromGoogle(message){
+  if (message.type == "results") {
+    console.log(message.results)
+    return
+  }
+  
+  if (message.type == "started") {
     let question = googleQuestions.pop()
     if (question == undefined) {
       return
     }
     portFromContentScript.postMessage({question: question});
   }
-
-  portFromContentScript.postMessage({greeting: "In background script, received message from content script:" + m.greeting});
 }
 
 function handleMessageFromPopup(message){
