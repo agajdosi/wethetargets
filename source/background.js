@@ -20,24 +20,35 @@ function connected(port) {
 }
 
 
-function handleMessageFromContentScript(message){
-  if (message.page == "google") handleMessageFromGoogle(message);
+function handleMessageFromContentScript(message, sender){
+  if (message.page == "google") handleMessageFromGoogle(message, sender);
 }
 
-function handleMessageFromGoogle(message){
-  if (message.type == "results") {
+function handleMessageFromGoogle(message, sender){
+  if (message.type == "results-suggestedSearches") {
     results.push([message.question, message.results])
     uploadGoogleResults(message.question, message.results)
     return
   }
+
+  if (message.type == "results-ofSearch") {
+    console.log(message.results)
+  }
   
-  if (message.type == "started") {
-    let question = questions.pop()
-    if (question == undefined) {
-      console.log(results)
+  
+  if (message.type == "loaded") {
+    if (message.pathname == "/search"){
       return
     }
-    portFromContentScript.postMessage({"question": question});
+    if (message.pathname == "/"){
+      let question = questions.pop()
+      if (question == undefined) {
+        console.log(results)
+        return
+      }
+      portFromContentScript.postMessage({"question": question});
+      return
+    }
   }
 }
 
@@ -48,7 +59,7 @@ function handleMessageFromPopup(message){
 function runGoogleTest(){
   results = [];
   questions = getResearchQuestions()
-  browser.tabs.update({url: "https://google.com"})
+  browser.tabs.update({url: "https://www.google.com"})
 }
 
 function uploadGoogleResults(question, results){

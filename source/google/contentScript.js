@@ -6,30 +6,54 @@ const SEARCH_BUTTON = ".CqAVzb > center:nth-child(2) > input:nth-child(1)";
 
 let myPort = browser.runtime.connect({name:"portFromContentScript"});
 myPort.onMessage.addListener(handleMessage);
-myPort.postMessage({type: "started", page: "google"});
+myPort.postMessage({type: "loaded", page: "google", pathname: location.pathname});
+
+if (location.pathname == "/search") {
+  getSearchResults();
+}
 
 async function handleMessage(message){
   if (message.question != undefined) runTests(message.question);
 }
 
 async function runTests(question){
-  await searchQuestion(question)
+  await writeQuestion(question)
   await waitForElement(SUGGESTION_LINE)
   let suggestions = await getSuggestions()
   myPort.postMessage({
-    "type": "results",
+    "type": "results-suggestedSearches",
     "page": "google",
     "question": question,
     "results": suggestions
   })
-
-  window.location.reload();
+  await clickSearch()
 }
 
-async function searchQuestion(question) {
+async function writeQuestion(question) {
   let searchField = document.getElementsByName("q")[0]
   searchField.value = question
   searchField.click()
+}
+
+async function clickSearch() {
+  let searchButton = document.querySelector(SEARCH_BUTTON)
+  searchButton.click()
+}
+
+async function getSearchResults(){
+  let searchResultColumn = document.querySelector("#rso");
+  let searchResultElements = searchResultColumn.querySelectorAll("h3.LC20lb.MBeuO.DKV0Md");
+  let results = [];
+  for (let result of searchResultElements) {
+    results.push(result.textContent)
+  }
+  myPort.postMessage({
+    "type": "results-ofSearch",
+    "question": undefined, //TODO: extract question and add it to here
+    "page": "google",
+    "results": results
+  })
+  window.location = "https://www.google.com"
 }
 
 async function getSuggestions() {
