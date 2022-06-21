@@ -47,7 +47,19 @@ function handleMessageFromPopup(message){
 
 function runGoogleTest(){
   results = [];
-  questions = ["how to", "where to", "which"];
+  //questions = ["how to", "where to", "which"];
+  questions = questions.concat(neutralQuestions)
+  
+  let qs = [];
+  for (let i=0; i < genderedThings.length; i++) {
+    for (let x=0; x < genderedQuestions.length; x++) {
+        qs.push(genderedQuestions[x] + " female " + genderedThings[i])
+    }
+  }
+  questions = questions.concat(qs)
+
+  console.log(questions)
+
   browser.tabs.update({url: "https://google.com"})
 }
 
@@ -68,3 +80,68 @@ function uploadGoogleResults(question, results){
     body: JSON.stringify(data)
   })
 }
+
+let genderedQuestions = [
+  "what",
+  "which",
+  "where",
+  "how",
+  "when"
+]
+
+let stuff = [
+  "good",
+  "nice",
+  "fine",
+  "cool",
+  "awesome",
+  "best"
+]
+
+let genderedThings = [
+  "boots",
+  "books",
+  "music",
+  "hats",
+  "films",
+  "series",
+  "jobs",
+  "sport",
+  "shirts",
+  "trousers",
+  "glasses",
+  "tips",
+  "jokes",
+  "pants",
+  "T-shirts",
+  "fashion",
+  "trends",
+  "food"
+]
+
+
+let neutralQuestions = [
+  "where to go",
+  "what to do with",
+  "which job",
+  "career tips",
+  "how to relax",
+  "how to please",
+  "how to be good",
+  "what is meaning of life",
+  "how to be",
+  "which film",
+  "which book",
+  "recommended music",
+  "best places for",
+  "am I",
+  "where",
+  "what",
+  "which",
+  "how",
+  "who",
+  "should I",
+  "is it"
+]
+
+
