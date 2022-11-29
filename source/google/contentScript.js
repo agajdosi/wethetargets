@@ -2,7 +2,6 @@
 const SUGGESTION_LINE = "li.sbct:not(#YMXe)";
 const SUGGESTION = "div.wM6W7d";
 const DELETE_BUTTON = "span.ExCKkf";
-const SEARCH_BUTTON = ".CqAVzb > center:nth-child(2) > input:nth-child(1)";
 
 let myPort = browser.runtime.connect({name:"portFromContentScript"});
 myPort.onMessage.addListener(handleMessage);
@@ -36,7 +35,7 @@ async function writeQuestion(question) {
 }
 
 async function clickSearch() {
-  let searchButton = document.querySelector(SEARCH_BUTTON)
+  let searchButton = document.getElementsByName("btnK")[0]
   searchButton.click()
 }
 

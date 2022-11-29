@@ -39,7 +39,7 @@
 		}
 	],
 	"background": {
-		"scripts": [ "background.js", "simulation.js" ],
+		"scripts": [ "background.js" ],
 		"persistent": false
 	}
 }
