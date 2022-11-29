@@ -1,5 +1,9 @@
-# Platform Psychology Ops
+# We the Targets - browser extension
 
+We the Users are being analyzed, targeted and manipulated.
+We know about it, but it is hard to get insight into those processes.
+This browser extenstion is an experimental attempt to understand it in more detail.
+It is an attempt in Applied Platform Psychology.
 
 ## Build locally
 
