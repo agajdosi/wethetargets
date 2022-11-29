@@ -23,7 +23,7 @@
 		}
   },
 	"options_ui": {
-		"chrome_style": true,
+		"browser_style": true,
 		"page": "preferences.html"
 	},
 	"permissions": [
