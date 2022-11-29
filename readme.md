@@ -22,6 +22,10 @@ Using web-ext is recommened for automatic reloading and running in a dedicated b
 3. In another terminal, run `web-ext run` for Firefox or `web-ext run -t chromium`
 4. Check that the extension is loaded by opening the extension options (in Firefox or in Chrome).
 
+### CONSOLE
+
+Check the console at: about:debugging#/runtime/this-firefox, click on explore.
+
 
 ## Signing
 
