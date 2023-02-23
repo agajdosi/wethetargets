@@ -1,5 +1,3 @@
-import './simulation.js';
-
 let portFromContentScript;
 let portFromPopup;
 

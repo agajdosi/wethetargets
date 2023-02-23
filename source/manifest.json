@@ -36,10 +36,15 @@
 			"matches": [ "*://www.google.com/", "*://www.google.com/search*" ],
 			"js": [ "google/contentScript.js" ],
 			"run_at": "document_end"
+		},
+		{
+			"matches": [ "*://www.facebook.com/", "*://www.facebook.com/*" ],
+			"js": [ "facebook/content.js" ],
+			"run_at": "document_end"
 		}
 	],
 	"background": {
-		"scripts": [ "background.js", "simulation.js"],
+		"scripts": [ "background.js" ],
 		"persistent": false
 	}
 }
