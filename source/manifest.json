@@ -2,7 +2,7 @@
 	"name": "We the Targets",
 	"version": "0.0.1",
 	"description": "Extension to gather ads and other targeted messages and share them into collective database for further analysis.",
-	"homepage_url": "https://github.com/agajdosi/wethetargets",
+	"homepage_url": "https://github.com/wethetargets/wethetargets",
 	"manifest_version": 2,
 	"minimum_chrome_version": "80",
 	"applications": {
@@ -24,7 +24,7 @@
   },
 	"options_ui": {
 		"browser_style": true,
-		"page": "preferences.html"
+		"page": "preferences/preferences.html"
 	},
 	"permissions": [
 		"storage",
