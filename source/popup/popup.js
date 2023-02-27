@@ -1,45 +1,63 @@
 // Starting point for all code running from the popup window.
-let myPort = browser.runtime.connect({name:"portFromPopup"});
+const myPort = browser.runtime.connect({name: 'portFromPopup'});
 
-window.addEventListener("load", onPopupLoad);
-document.getElementById("googleButton").addEventListener("click", startGoogleTest);
-document.getElementById("saveDemographics").addEventListener("click", saveDemographics);
+window.addEventListener('load', onPopupLoad);
+document.querySelector('#googleButton').addEventListener('click', startGoogleTest);
+document.querySelector('#saveDemographics').addEventListener('click', saveDemographics);
 
 // Start result mining on Google search.
-function startGoogleTest(){
-    myPort.postMessage({command: "start the google test"});
+function startGoogleTest() {
+	myPort.postMessage({command: 'start the google test'});
 }
 
-
-function saveDemographics(e){
-    e.preventDefault();
-    const gender = document.getElementById("gender").value;
-    const country = document.getElementById("country").value;
-    const born = document.getElementById("born").value;
-    const education = document.getElementById("education").value;
-    const profession = document.getElementById("profession").value;
-    const interests = document.getElementById("interests").value;
-    const email = document.getElementById("email").value;
-    browser.storage.sync.set({
-        gender: gender,
-        country: country,
-        born: born,
-        education: education,
-        profession: profession,
-        interests: interests,
-        email: email,
-    });
-    console.log("Saved demographics");
+function saveDemographics(e) {
+	e.preventDefault();
+	const gender = document.querySelector('#gender').value;
+	const country = document.querySelector('#country').value;
+	const born = document.querySelector('#born').value;
+	const education = document.querySelector('#education').value;
+	const profession = document.querySelector('#profession').value;
+	const interests = document.querySelector('#interests').value;
+	const email = document.querySelector('#email').value;
+	browser.storage.sync.set({
+		gender,
+		country,
+		born,
+		education,
+		profession,
+		interests,
+		email,
+	});
+	console.log('Saved demographics');
 }
 
+async function onPopupLoad(e) {
+	const stored = await browser.storage.sync.get();
+	if (stored.gender) {
+		document.querySelector('#gender').value = stored.gender;
+	}
 
-async function onPopupLoad(e){
-    const stored = await browser.storage.sync.get();
-    if (stored["gender"]) document.getElementById("gender").value = stored["gender"];
-    if (stored["country"]) document.getElementById("country").value = stored["country"];
-    if (stored["born"]) document.getElementById("born").value = stored["born"];
-    if (stored["education"]) document.getElementById("education").value = stored["education"];
-    if (stored["profession"]) document.getElementById("profession").value = stored["profession"];
-    if (stored["interests"]) document.getElementById("interests").value = stored["interests"];
-    if (stored["email"]) document.getElementById("email").value = stored["email"];
+	if (stored.country) {
+		document.querySelector('#country').value = stored.country;
+	}
+
+	if (stored.born) {
+		document.querySelector('#born').value = stored.born;
+	}
+
+	if (stored.education) {
+		document.querySelector('#education').value = stored.education;
+	}
+
+	if (stored.profession) {
+		document.querySelector('#profession').value = stored.profession;
+	}
+
+	if (stored.interests) {
+		document.querySelector('#interests').value = stored.interests;
+	}
+
+	if (stored.email) {
+		document.querySelector('#email').value = stored.email;
+	}
 }
