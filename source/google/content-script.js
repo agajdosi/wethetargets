@@ -1,5 +1,5 @@
 
-const SUGGESTION_LINE = 'li.sbct:not(#YMXe)';
+const SUGGESTION_LINE = 'li.sbct:not(#YMXe):not(#mitGyb)';
 const SUGGESTION = 'div.wM6W7d';
 // Const DELETE_BUTTON = 'span.ExCKkf';
 
