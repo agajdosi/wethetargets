@@ -1,50 +1,77 @@
 {
-	"name": "We the Targets",
-	"version": "0.0.1",
-	"description": "Extension to gather ads and other targeted messages and share them into collective database for further analysis.",
-	"homepage_url": "https://github.com/wethetargets/wethetargets",
-	"manifest_version": 2,
-	"minimum_chrome_version": "80",
-	"applications": {
-		"gecko": {
-			"id": "platform-reverse-psychology@gajdosik.org",
-			"strict_min_version": "80.0"
-		}
-	},
-	"icons": {
-		"128": "icon.png"
-	},
-	"browser_action": {
-    "default_popup": "popup/popup.html",
-    "default_icon": {
-      "16": "icon.png",
-      "32": "icon.png",
-      "48": "icon.png"
-		}
-  },
-	"options_ui": {
+    "applications": {
+        "gecko": {
+            "id": "platform-reverse-psychology@gajdosik.org",
+            "strict_min_version": "80.0"
+        }
+    },
+    "author": "Andreas Gajdosik",
+    "background": {
+        "persistent": false,
+        "scripts": [
+            "background/bg.js"
+        ]
+    },
+    "browser_action": {
 		"browser_style": true,
-		"page": "preferences/preferences.html"
-	},
-	"permissions": [
-		"storage",
-		"tabs",
-		"<all_urls>"
-	],
-	"content_scripts": [
-		{
-			"matches": [ "*://www.google.com/", "*://www.google.com/search*" ],
-			"js": [ "google/content-script.js" ],
-			"run_at": "document_end"
-		},
-		{
-			"matches": [ "*://www.facebook.com/", "*://www.facebook.com/*" ],
-			"js": [ "facebook/content.js" ],
-			"run_at": "document_end"
-		}
-	],
-	"background": {
-		"scripts": [ "background/bg.js" ],
-		"persistent": false
-	}
+        "default_icon": {
+            "16": "icon.png",
+            "32": "icon.png",
+            "48": "icon.png"
+        },
+		"default_title": "We the Targets",
+        "default_popup": "popup/popup.html"
+    },
+    "content_scripts": [
+        {
+            "js": [
+                "facebook/content.js"
+            ],
+            "matches": [
+                "*://www.facebook.com/",
+                "*://www.facebook.com/*"
+            ],
+            "run_at": "document_end"
+        },
+        {
+            "js": [
+                "google/content-script.js"
+            ],
+            "matches": [
+                "*://www.google.com/",
+                "*://www.google.com/search*"
+            ],
+            "run_at": "document_end"
+        }
+    ],
+    "description": "Extension to gather ads and other targeted messages and share them into collective database for further analysis.",
+    "homepage_url": "https://github.com/wethetargets/wethetargets",
+    "icons": {
+		"16": "icon.png",
+		"32": "icon.png",
+        "48": "icon.png",
+		"64": "icon.png",
+		"96": "icon.png",
+		"128": "icon.png"
+    },
+    "manifest_version": 2,
+    "minimum_chrome_version": "80",
+    "name": "We the Targets",
+    "options_ui": {
+        "open_in_tab": true,
+        "page": "preferences/preferences.html"
+    },
+    "permissions": [
+        "<all_urls>",
+        "storage",
+        "tabs"
+    ],
+	"short_name": "weTargets",
+	"disabled_sidebar_action": {
+		"default_title": "We the Targets",
+		"default_panel": "popup/popup.html",
+		"default_icon": "icon.png",
+		"open_at_install": true
+	  },
+    "version": "0.0.2"
 }
