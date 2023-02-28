@@ -34,7 +34,7 @@
 	"content_scripts": [
 		{
 			"matches": [ "*://www.google.com/", "*://www.google.com/search*" ],
-			"js": [ "google/contentScript.js" ],
+			"js": [ "google/content-script.js" ],
 			"run_at": "document_end"
 		},
 		{
