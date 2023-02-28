@@ -1,18 +1,18 @@
 
 const SUGGESTION_LINE = 'li.sbct:not(#YMXe)';
 const SUGGESTION = 'div.wM6W7d';
-const DELETE_BUTTON = 'span.ExCKkf';
+// Const DELETE_BUTTON = 'span.ExCKkf';
 
 const myPort = browser.runtime.connect({name: 'portFromContentScript'});
 myPort.onMessage.addListener(handleMessage);
 myPort.postMessage({type: 'loaded', page: 'google', pathname: location.pathname});
 
-if (location.pathname == '/search') {
+if (location.pathname === '/search') {
 	getSearchResults();
 }
 
 async function handleMessage(message) {
-	if (message.question != undefined) {
+	if (message.question !== undefined) {
 		runTests(message.question);
 	}
 }
@@ -62,7 +62,7 @@ async function getSuggestions() {
 	const results = [];
 	const suggestions = document.querySelectorAll(SUGGESTION);
 	for (const suggestion of suggestions) {
-		if (suggestion.outerText != '') {
+		if (suggestion.outerText !== '') {
 			results.push(suggestion.outerText);
 		}
 	}
@@ -70,15 +70,8 @@ async function getSuggestions() {
 	return results;
 }
 
-async function deleteSearch() {
-	document.querySelector(DELETE_BUTTON).click();
-	const searchField = document.getElementsByName('q')[0];
-	searchField.value = '';
-	searchField.click();
-}
-
 function waitForElement(selector) {
-	return new Promise((resolve, reject) => {
+	return new Promise(resolve => {
 		const element = document.querySelector(selector);
 		if (element) {
 			resolve(element);
@@ -86,7 +79,7 @@ function waitForElement(selector) {
 		}
 
 		const observer = new MutationObserver(mutations => {
-			mutations.forEach(mutation => {
+			for (const mutation of mutations) {
 				const nodes = Array.from(mutation.addedNodes);
 				for (const node of nodes) {
 					if (node.matches && node.matches(selector)) {
@@ -95,7 +88,7 @@ function waitForElement(selector) {
 						return;
 					}
 				}
-			});
+			}
 		});
 		observer.observe(document.documentElement, {childList: true, subtree: true});
 	});

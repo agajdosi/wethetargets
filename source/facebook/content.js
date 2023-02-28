@@ -2,3 +2,4 @@
 
 // <text id="gid5" style="fill: currentcolor; font-size: 12px; overflow: visible;" y="12">Sponsored</text>
 
+console.log('facebook/content.js loaded');

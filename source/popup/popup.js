@@ -10,8 +10,8 @@ function startGoogleTest() {
 	myPort.postMessage({command: 'start the google test'});
 }
 
-function saveDemographics(e) {
-	e.preventDefault();
+function saveDemographics(event) {
+	event.preventDefault();
 	const gender = document.querySelector('#gender').value;
 	const country = document.querySelector('#country').value;
 	const born = document.querySelector('#born').value;
@@ -31,7 +31,7 @@ function saveDemographics(e) {
 	console.log('Saved demographics');
 }
 
-async function onPopupLoad(e) {
+async function onPopupLoad() {
 	const stored = await browser.storage.sync.get();
 	if (stored.gender) {
 		document.querySelector('#gender').value = stored.gender;

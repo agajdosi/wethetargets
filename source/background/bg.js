@@ -6,8 +6,8 @@ const SERVER = 'http://localhost:8888';
 let questions = [];
 let results = [];
 
+// CONNECTION to popup scripts and content scripts
 browser.runtime.onConnect.addListener(connected);
-
 function connected(port) {
 	if (port.name === 'portFromContentScript') {
 		portFromContentScript = port;
@@ -20,21 +20,22 @@ function connected(port) {
 	}
 }
 
-function handleMessageFromContentScript(message, sender) {
+function handleMessageFromContentScript(message) {
 	if (message.page === 'google') {
-		handleMessageFromGoogle(message, sender);
+		handleMessageFromGoogle(message);
 	}
 }
 
-function handleMessageFromGoogle(message, sender) {
+function handleMessageFromGoogle(message) {
 	if (message.type === 'results-suggestedSearches') {
+		console.log('results-suggestedSearches:', message.results);
 		results.push([message.question, message.results]);
 		uploadGoogleResults(message.question, message.results);
 		return;
 	}
 
 	if (message.type === 'results-ofSearch') {
-		console.log(message.results);
+		console.log('results-ofSearch:', message.results);
 	}
 
 	if (message.type === 'loaded') {
@@ -44,7 +45,7 @@ function handleMessageFromGoogle(message, sender) {
 
 		if (message.pathname === '/') {
 			const question = questions.pop();
-			if (question == undefined) {
+			if (question === undefined) {
 				console.log(results);
 				return;
 			}
