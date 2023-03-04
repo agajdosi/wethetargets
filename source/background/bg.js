@@ -6,6 +6,8 @@ const SERVER = 'https://artops.gajdosik.org/wethetargets';
 let questions = [];
 let results = [];
 
+const DEMOGRAPHICS = {born: 1992, sex: 'male', country: 'CZ'} // TODO: get actual data from popup
+
 // CONNECTION to popup scripts and content scripts
 browser.runtime.onConnect.addListener(connected);
 function connected(port) {
@@ -29,7 +31,7 @@ function handleMessageFromPopup(message) {
 
 function runGoogleTest() {
 	results = [];
-	questions = getResearchQuestions();
+	questions = getSearchQuestions();
 	browser.tabs.update({url: 'https://www.google.com'});
 }
 
@@ -51,6 +53,8 @@ function handleMessageFromGoogle(message) {
 
 	if (message.type === 'results-ofSearch') {
 		console.log('results-ofSearch:', message.results);
+		uploadGoogleSearchResults(message.question, message.results);
+		return;
 	}
 
 	// Page loaded
@@ -66,17 +70,19 @@ function handleMessageFromGoogle(message) {
 				console.log(results);
 				return;
 			}
-
 			portFromContentScript.postMessage({question});
+			return;
 		}
 	}
 }
 
+//GOOGLE DATA UPLOAD
+//Upload Google suggestions
 async function uploadGoogleSuggestions(question, suggestions) {
 	const apiEndpoint = SERVER + '/ggl-suggestions';
 	const data = {
 		extensionVersion: EXTENSION_VERSION,
-		demographics: {born: 1992, sex: 'male', country: 'CZ'}, // TODO: get actual data from popup
+		demographics: DEMOGRAPHICS,
 		question,
 		suggestions,
 	};
@@ -93,7 +99,30 @@ async function uploadGoogleSuggestions(question, suggestions) {
 	console.log('uploadGoogleSuggestions results:', results);
 }
 
-function getResearchQuestions() {
+//Upload Google search results
+async function uploadGoogleSearchResults(question, searches) {
+	const apiEndpoint = SERVER + '/ggl-searches';
+	const data = {
+		extensionVersion: EXTENSION_VERSION,
+		demographics: DEMOGRAPHICS,
+		question,
+		searches,
+	};
+	const options = {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json, text/plain, */*',
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(data),
+	};
+	const response = await fetch(apiEndpoint, options);
+	const results = await response.json();
+	console.log('uploadGoogleSearches results:', results);
+}
+
+//GET DATA TO UPLOAD
+function getSearchQuestions() {
 	const researchQuestions = [
 		'where to go',
 		'what to do with',
