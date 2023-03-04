@@ -52,7 +52,7 @@ function handleMessageFromGoogle(message) {
 	}
 
 	if (message.type === 'results-ofSearch') {
-		console.log('results-ofSearch:', message.results);
+		console.log('results-ofSearch:', message.results, message.question);
 		uploadGoogleSearchResults(message.question, message.results);
 		return;
 	}

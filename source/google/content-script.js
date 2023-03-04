@@ -1,7 +1,11 @@
 
+// PRE-SEARCH
 const SUGGESTION_LINE = 'li.sbct:not(#YMXe):not(#mitGyb)';
 const SUGGESTION = 'div.wM6W7d';
 // Const DELETE_BUTTON = 'span.ExCKkf';
+
+// POST-SEARCH
+const SEARCHED_QUESTION = 'input.gLFyf[name="q"]';
 
 const myPort = browser.runtime.connect({name: 'portFromContentScript'});
 myPort.onMessage.addListener(handleMessage);
@@ -41,17 +45,21 @@ async function clickSearch() {
 	searchButton.click();
 }
 
+// POST-SEARCH
 async function getSearchResults() {
+	const inputField = document.querySelector(SEARCHED_QUESTION);
+	const searchedQuestion = inputField.value;
 	const searchResultColumn = document.querySelector('#rso');
 	const searchResultElements = searchResultColumn.querySelectorAll('h3.LC20lb.MBeuO.DKV0Md');
 	const results = [];
 	for (const result of searchResultElements) {
 		results.push(result.textContent);
 	}
+	// TODO: do not report with zero results or empty question
 
 	myPort.postMessage({
 		type: 'results-ofSearch',
-		question: undefined, // TODO: extract question and add it to here
+		question: searchedQuestion,
 		page: 'google',
 		results,
 	});
