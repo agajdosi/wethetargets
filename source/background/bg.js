@@ -6,7 +6,7 @@ const SERVER = 'https://artops.gajdosik.org/wethetargets';
 let questions = [];
 let results = [];
 
-const DEMOGRAPHICS = {born: 1992, sex: 'male', country: 'CZ'} // TODO: get actual data from popup
+const DEMOGRAPHICS = {born: 1992, sex: 'male', country: 'CZ'}; // TODO: get actual data from popup
 
 // CONNECTION to popup scripts and content scripts
 browser.runtime.onConnect.addListener(connected);
@@ -70,14 +70,14 @@ function handleMessageFromGoogle(message) {
 				console.log(results);
 				return;
 			}
+
 			portFromContentScript.postMessage({question});
-			return;
 		}
 	}
 }
 
-//GOOGLE DATA UPLOAD
-//Upload Google suggestions
+// GOOGLE DATA UPLOAD
+// Upload Google suggestions
 async function uploadGoogleSuggestions(question, suggestions) {
 	const apiEndpoint = SERVER + '/ggl-suggestions';
 	const data = {
@@ -99,7 +99,7 @@ async function uploadGoogleSuggestions(question, suggestions) {
 	console.log('uploadGoogleSuggestions results:', results);
 }
 
-//Upload Google search results
+// Upload Google search results
 async function uploadGoogleSearchResults(question, searches) {
 	const apiEndpoint = SERVER + '/ggl-searches';
 	const data = {
@@ -121,7 +121,7 @@ async function uploadGoogleSearchResults(question, searches) {
 	console.log('uploadGoogleSearches results:', results);
 }
 
-//GET DATA TO UPLOAD
+// GET DATA TO UPLOAD
 function getSearchQuestions() {
 	const researchQuestions = [
 		'where to go',
